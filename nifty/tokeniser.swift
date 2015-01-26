@@ -11,7 +11,7 @@ import Foundation
 //MARK: Program tokenisation
 
 /// Position information within a program
-public class LineContext : NSObject, Equatable {
+public class LineContext : NSObject, Equatable, Printable {
     public typealias LinePosition = Int
     public typealias LineNumber = Int
     
@@ -22,6 +22,12 @@ public class LineContext : NSObject, Equatable {
         self.pos = pos
         self.line = line;
     }
+	
+	public override var description: String {
+		get {
+			return "\(self.line):\(self.pos)"
+		}
+	}
 }
 
 public func ==(lhs: LineContext, rhs: LineContext) -> Bool {
