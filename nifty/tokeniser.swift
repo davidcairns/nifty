@@ -64,6 +64,7 @@ enum SwiftToken: Printable, Equatable {
     case Invalid(String)
     case IntegerLiteral(Int)
     case DoubleLiteral(Double)
+	case StringLiteral(String)
     
     case Identifier(String)
     
@@ -95,6 +96,8 @@ enum SwiftToken: Printable, Equatable {
             return val.description
         case .DoubleLiteral(let double):
             return double.description
+		case .StringLiteral(let value):
+			return value
         case .Identifier(let string):
             return string
         case .SemiColon:
@@ -208,6 +211,15 @@ enum SwiftToken: Printable, Equatable {
                     context.append(LineContext(pos: cachedLinePos, line: cachedLine))
                     linepos += countElements($0[0])
                 }?
+				
+				// Matches a String literal e.g. "Foo"
+				.match(/"^\"[^\"]*\"") {
+					let matchies = $0
+					let str = $0[0] as String
+					tokens.append(SwiftToken.StringLiteral(str))
+					context.append(LineContext(pos: cachedLinePos, line: cachedLine))
+					linepos += countElements($0[0])
+				}?
                 
                 
                 // Declarations
@@ -421,6 +433,8 @@ func ==(lhs: SwiftToken, rhs: SwiftToken) -> Bool {
         return x == y
     case (let .DoubleLiteral(x), let .DoubleLiteral(y)):
         return x == y
+	case (let .StringLiteral(x), let .StringLiteral(y)):
+		return x == y
     case (let .PrefixOperator(x), let .PrefixOperator(y)):
         return x == y
     case (let .InfixOperator(x), let .InfixOperator(y)):
