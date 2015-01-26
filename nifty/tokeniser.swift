@@ -81,6 +81,8 @@ enum SwiftToken: Printable, Equatable {
     case Comma
     
     case While, If, Return, Function
+	
+	case Struct, Class
     
     case True, False
     
@@ -118,6 +120,10 @@ enum SwiftToken: Printable, Equatable {
             return "let"
         case .Function:
             return "func"
+		case .Struct:
+			return "struct"
+		case .Class:
+			return "class"
         case .LeftBracket:
             return "("
         case .LeftBrace:
@@ -238,6 +244,20 @@ enum SwiftToken: Printable, Equatable {
                     linepos += countElements($0[0])
                 }?
                 
+				// Matches the struct keyword
+				.match(/"^struct(?!\(identifierRegex))") {
+					tokens.append(SwiftToken.Struct)
+					context.append(LineContext(pos: cachedLinePos, line: cachedLine))
+					linepos += countElements($0[0])
+				}?
+				
+				// Matches the class keyword
+				.match(/"^class(?!\(identifierRegex))") {
+					tokens.append(SwiftToken.Class)
+					context.append(LineContext(pos: cachedLinePos, line: cachedLine))
+					linepos += countElements($0[0])
+				}?
+				
                 // Keywords
                 
                 // Matches the func keyword
