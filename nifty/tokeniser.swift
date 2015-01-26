@@ -379,7 +379,7 @@ enum SwiftToken: Printable, Equatable {
                 .match(/"^(\\n)+") {
                     tokens.append(SwiftToken.NewLine)
                     context.append(LineContext(pos: cachedLinePos, line: cachedLine))
-                    linepos = 0
+					linepos += countElements($0[0])
                     line += $0.count - 1
                 }?
                 
