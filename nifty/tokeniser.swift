@@ -37,7 +37,7 @@ public func ==(lhs: LineContext, rhs: LineContext) -> Bool {
 // A lexical representation of a source program. Composed of an array of SwiftToken enums, and
 // a corresponding array of LineContext objects, referring to the position at which the enums
 // were encountered in the source.
-class SwiftLexicalRepresentation {
+class SwiftLexicalRepresentation: Printable {
     var tokens: [SwiftToken]
     var context: [LineContext]
     
@@ -45,6 +45,18 @@ class SwiftLexicalRepresentation {
         self.tokens = tokens
         self.context = context
     }
+	
+	var description: String {
+		get {
+			var childrenDescription = ""
+			for i in 0 ..< self.context.count {
+				let token = self.tokens[i]
+				let ctx = self.context[i]
+				childrenDescription += "\(ctx): \(token), \n"
+			}
+			return "SwiftLexicalRepresentation {\n\(childrenDescription)\n}"
+		}
+	}
 }
 
 // Representation of Swift's lexical syntax
