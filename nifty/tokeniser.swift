@@ -426,7 +426,7 @@ enum SwiftToken: Printable, Equatable {
                 }?
             
             // Get position of the first character in our input string.
-            var index = input.startIndex
+            let index = input.startIndex
             // Calculate the position of the first character we have not yet encountered
             let newIndex = advance(index, linepos - cachedLinePos)
             // Replace old string with substring starting from newIndex
