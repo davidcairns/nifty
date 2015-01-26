@@ -156,7 +156,7 @@ enum SwiftToken: Printable, Equatable {
         
         var errors = [SCError]()
         
-        let identifierRegex = "([a-z_][a-z0-9]*)"
+		let identifierRegex = "([a-zA-Z_][a-zA-Z0-9_]*)"
         
         var linepos = 1, line = 1
         
